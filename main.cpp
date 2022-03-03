@@ -5,12 +5,22 @@
 int main(void) {
     TicTacToeGrid grid;
     grid.print();
+    std::cout << std::endl;
 
-    Move m = minmax(grid, 9, true);
+    while (!grid.is_endgame()) {
+        bool turn = grid.getTurn();
+        Move m = minmax(grid, 3, turn);
+        int* pos = m.getPosition();
+        grid = grid.makeMove(turn, pos);
 
-    int* pos = m.getPosition();
-    std::cout << pos[0] << "," << pos[1] << std::endl;
-    std::cout << m.getScore() << std::endl;
+        grid.print();
+        std::cout << "pos: " << pos[0] << "," << pos[1] << std::endl;
+        std::cout << "score: " << m.getScore() << std::endl;
+        std::cout << "endgame: " << grid.is_endgame() << std::endl;
+        std::cout << "victory_player: " << grid.victory_player() << std::endl;
+
+        std::cout << std::endl;
+    }
 
     return 0;
 }

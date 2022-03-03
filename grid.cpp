@@ -11,6 +11,8 @@ void TicTacToeGrid::print() {
     }
 }
 
+bool TicTacToeGrid::getTurn() { return turn; }
+
 TicTacToeGrid& TicTacToeGrid::makeMove(bool player, int position[2]) {
     TicTacToeGrid* newGrid = new TicTacToeGrid();
     if (player) {
@@ -18,6 +20,8 @@ TicTacToeGrid& TicTacToeGrid::makeMove(bool player, int position[2]) {
     } else {
         newGrid->grid[position[0]][position[1]] = P2;
     }
+
+    newGrid->turn = !newGrid->turn;
 
     return *newGrid;
 }
@@ -48,58 +52,56 @@ bool TicTacToeGrid::is_endgame() {
 }
 
 char TicTacToeGrid::victory_player() {
-    char player = OO;
-
     // horizontal
     if (grid[0][0] == grid[0][1] && grid[0][1] == grid[0][2] && grid[0][2] != OO
 
     ) {
-        player = grid[0][0];
+        return grid[0][0];
     }
 
     if (grid[1][0] == grid[1][1] && grid[1][1] == grid[1][2] && grid[1][2] != OO
 
     ) {
-        player = grid[1][0];
+        return grid[1][0];
     }
 
     if (grid[2][0] == grid[2][1] && grid[2][1] == grid[2][2] && grid[2][2] != OO
 
     ) {
-        player = grid[2][0];
+        return grid[2][0];
     }
 
     // vertical
     if (grid[0][0] == grid[1][0] && grid[1][0] == grid[2][0] && grid[2][0] != OO
 
     ) {
-        player = grid[0][0];
+        return grid[0][0];
     }
 
     if (grid[0][1] == grid[1][1] && grid[1][1] == grid[2][1] && grid[2][1] != OO
 
     ) {
-        player = grid[0][1];
+        return grid[0][1];
     }
 
     if (grid[0][2] == grid[1][2] && grid[1][2] == grid[2][2] && grid[2][2] != OO
 
     ) {
-        player = grid[0][2];
+        return grid[0][2];
     }
 
     // diagonal
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != OO
 
     ) {
-        player = grid[0][0];
+        return grid[0][0];
     }
 
     if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != OO
 
     ) {
-        player = grid[0][2];
+        return grid[0][2];
     }
 
-    return player;
+    return OO;
 }

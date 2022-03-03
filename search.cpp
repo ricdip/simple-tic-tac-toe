@@ -20,7 +20,7 @@ const Move& min(const Move& m1, const Move& m2) {
 
 Move minmax(TicTacToeGrid grid, int depth, bool player) {
     if (depth == 0 || grid.is_endgame()) {
-        return Move{new int[2]{}, H(grid)};
+        return Move(new int[2]{}, H(grid));
     }
 
     if (player) {
@@ -33,7 +33,7 @@ Move minmax(TicTacToeGrid grid, int depth, bool player) {
         return bestMove;
 
     } else {
-        Move bestMove = Move{new int[2]{}, INT_MAX};
+        Move bestMove = Move(new int[2]{}, INT_MAX);
         std::vector<int*> moves = grid.getMoves();
         for (auto it = moves.begin(); it != moves.end(); it++) {
             TicTacToeGrid g = grid.makeMove(player, *it);

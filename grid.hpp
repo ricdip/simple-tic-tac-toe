@@ -15,10 +15,13 @@ class TicTacToeGrid {
             OO, OO, OO,
             OO, OO, OO,
         };
+
+        bool turn = true;
     // clang-format on
 
    public:
     void print();
+    bool getTurn();
     TicTacToeGrid& makeMove(bool player, int position[2]);
     std::vector<int*> getMoves();
     bool is_endgame();
