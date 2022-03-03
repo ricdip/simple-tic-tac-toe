@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -pedantic -Wall -Wextra -Werror
 CFLAGSDEBUG = -pedantic -Wall -Wextra -Werror -fsanitize=address -g
-SRC = grid.cpp main.cpp
+SRC = grid.cpp search.cpp heuristics.cpp main.cpp
 OBJ = main.exe
 OBJDEBUG = main_debug.exe
 

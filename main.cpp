@@ -1,19 +1,16 @@
 #include <iostream>
 
-#include "grid.hpp"
+#include "search.hpp"
 
 int main(void) {
     TicTacToeGrid grid;
     grid.print();
 
-    std::cout << std::endl;
+    Move m = minmax(grid, 9, true);
 
-    std::vector<int*> moves = grid.getMoves();
-
-    for (auto it = moves.begin(); it != moves.end(); it++) {
-        int* pos = *it;
-        std::cout << pos[0] << "," << pos[1] << std::endl;
-    }
+    int* pos = m.getPosition();
+    std::cout << pos[0] << "," << pos[1] << std::endl;
+    std::cout << m.getScore() << std::endl;
 
     return 0;
 }

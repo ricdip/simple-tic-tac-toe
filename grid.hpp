@@ -22,4 +22,5 @@ class TicTacToeGrid {
     TicTacToeGrid& makeMove(bool player, int position[2]);
     std::vector<int*> getMoves();
     bool is_endgame();
+    char victory_player();
 };
