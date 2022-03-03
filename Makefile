@@ -1,9 +1,9 @@
 CC = g++
 CFLAGS = -pedantic -Wall -Wextra -Werror
 CFLAGSDEBUG = -pedantic -Wall -Wextra -Werror -fsanitize=address -g
-SRC = board.cpp
-OBJ = board.exe
-OBJDEBUG = board_debug.exe
+SRC = grid.cpp main.cpp
+OBJ = main.exe
+OBJDEBUG = main_debug.exe
 
 .DEFAULT_GOAL: build
 
