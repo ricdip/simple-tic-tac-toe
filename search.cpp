@@ -16,7 +16,7 @@ Move minmax(TicTacToeGrid grid, int depth, bool player) {
         Move move = Move{new int[2]{}, INT_MIN};
         std::vector<int*> moves = grid.getMoves();
         for (auto it = moves.begin(); it != moves.end(); it++) {
-            int* pos = *it;
+            TicTacToeGrid g = grid.makeMove(player, *it);
         }
 
     } else {
