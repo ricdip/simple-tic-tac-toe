@@ -4,13 +4,13 @@
 
 int main(void) {
     TicTacToeGrid grid;
-    grid.print();
-    std::cout << std::endl;
 
     while (!grid.is_endgame()) {
+        // return 0;
         bool turn = grid.getTurn();
-        Move m = minmax(grid, 3, turn);
+        Move m = minmax(grid, 9, turn);
         int* pos = m.getPosition();
+
         grid = grid.makeMove(turn, pos);
 
         grid.print();

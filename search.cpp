@@ -20,7 +20,7 @@ const Move& min(const Move& m1, const Move& m2) {
 
 Move minmax(TicTacToeGrid grid, int depth, bool player) {
     if (depth == 0 || grid.is_endgame()) {
-        return Move(new int[2]{}, H(grid));
+        return Move(grid.getLastMove().getPosition(), H(grid));
     }
 
     if (player) {

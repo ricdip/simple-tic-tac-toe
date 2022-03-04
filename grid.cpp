@@ -2,6 +2,16 @@
 
 #include <iostream>
 
+TicTacToeGrid::TicTacToeGrid() {}
+TicTacToeGrid::TicTacToeGrid(char g[ROWS][COLS], bool t) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            grid[i][j] = g[i][j];
+        }
+    }
+    turn = t;
+}
+
 void TicTacToeGrid::print() {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
@@ -14,14 +24,14 @@ void TicTacToeGrid::print() {
 bool TicTacToeGrid::getTurn() { return turn; }
 
 TicTacToeGrid& TicTacToeGrid::makeMove(bool player, int position[2]) {
-    TicTacToeGrid* newGrid = new TicTacToeGrid();
+    TicTacToeGrid* newGrid = new TicTacToeGrid(grid, !player);
     if (player) {
         newGrid->grid[position[0]][position[1]] = P1;
     } else {
         newGrid->grid[position[0]][position[1]] = P2;
     }
 
-    newGrid->turn = !newGrid->turn;
+    newGrid->lastMove->setPosition(position);
 
     return *newGrid;
 }
@@ -105,3 +115,5 @@ char TicTacToeGrid::victory_player() {
 
     return OO;
 }
+
+Move TicTacToeGrid::getLastMove() { return *lastMove; }

@@ -1,5 +1,7 @@
 #include <vector>
 
+#include "move.hpp"
+
 #define ROWS 3
 #define COLS 3
 
@@ -17,13 +19,17 @@ class TicTacToeGrid {
         };
 
         bool turn = true;
+        Move* lastMove = new Move();
     // clang-format on
 
    public:
+    TicTacToeGrid();
+    TicTacToeGrid(char g[ROWS][COLS], bool t);
     void print();
     bool getTurn();
     TicTacToeGrid& makeMove(bool player, int position[2]);
     std::vector<int*> getMoves();
     bool is_endgame();
     char victory_player();
+    Move getLastMove();
 };
