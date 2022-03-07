@@ -76,7 +76,7 @@ class TicTacToeGrid {
     TicTacToeGrid(char g[ROWS][COLS], bool t);
     void print();
     bool getTurn();
-    TicTacToeGrid& makeMove(bool player, int position[2]);
+    TicTacToeGrid makeMove(bool player, int position[2]);
     std::vector<Move> getMoves();
     bool isEndgame();
     char victoryPlayer();
@@ -104,17 +104,17 @@ void TicTacToeGrid::print() {
 
 bool TicTacToeGrid::getTurn() { return turn; }
 
-TicTacToeGrid& TicTacToeGrid::makeMove(bool player, int position[2]) {
-    TicTacToeGrid* newGrid = new TicTacToeGrid(grid, !player);
+TicTacToeGrid TicTacToeGrid::makeMove(bool player, int position[2]) {
+    TicTacToeGrid newGrid = TicTacToeGrid(grid, !player);
     if (player) {
-        newGrid->grid[position[0]][position[1]] = P1;
+        newGrid.grid[position[0]][position[1]] = P1;
     } else {
-        newGrid->grid[position[0]][position[1]] = P2;
+        newGrid.grid[position[0]][position[1]] = P2;
     }
 
     lastMove = Move(position);
 
-    return *newGrid;
+    return newGrid;
 }
 
 std::vector<Move> TicTacToeGrid::getMoves() {
@@ -123,7 +123,8 @@ std::vector<Move> TicTacToeGrid::getMoves() {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (grid[i][j] == OO) {
-                moves.push_back(Move(new int[2]{i, j}));
+                int pos[] = {i, j};
+                moves.push_back(Move(pos));
             }
         }
     }
@@ -236,10 +237,10 @@ int minmax(TicTacToeGrid grid, int depth, bool player) {
 }
 
 Move minmaxRoot(TicTacToeGrid grid, int depth, bool player) {
-    int bestValue = INT_MAX;
     Move bestMove = Move();
+    int bestValue = INT_MIN;
     if (!grid.getTurn()) {
-        bestValue = INT_MIN;
+        bestValue = INT_MAX;
     }
 
     std::vector<Move> moves = grid.getMoves();
@@ -275,6 +276,8 @@ int main(void) {
         Move m = minmaxRoot(grid, 9, turn);
 
         std::cout << "score: " << m.getScore() << std::endl;
+        std::cout << "pos: " << m.getPosition()[0] << "," << m.getPosition()[1]
+                  << std::endl;
 
         // grid = grid.makeMove(turn, grid.getMoves()[0].getPosition());
         grid = grid.makeMove(turn, m.getPosition());
@@ -285,27 +288,6 @@ int main(void) {
         std::cout << "------------------------" << std::endl;
         std::cout << std::endl;
     }
-
-    // std::cout << m.getPosition()[0] << "," << m.getPosition()[1] <<
-    // std::endl; std::cout << m.getScore() << std::endl;
-
-    // std::vector<Move> moves = grid.getMoves();
-
-    // for (auto it = moves.begin(); it != moves.end(); it++) {
-    //     std::cout << (it->getPosition()[0]) << "," << (it->getPosition()[1])
-    //               << std::endl;
-    // }
-
-    // std::cout << std::endl;
-
-    // grid = grid.makeMove(true, new int[2]{0, 0});
-
-    // std::vector<Move> moves_2 = grid.getMoves();
-
-    // for (auto it = moves_2.begin(); it != moves_2.end(); it++) {
-    //     std::cout << (it->getPosition()[0]) << "," << (it->getPosition()[1])
-    //               << std::endl;
-    // }
 
     return 0;
 }
