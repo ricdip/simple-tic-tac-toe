@@ -20,9 +20,15 @@ clean:
 	rm -f $(OBJ)
 	rm -f $(OBJDEBUG)
 
-run:
+run: build
+	@echo "Running..."
 	./$(OBJ)
 
-all: build run
+run_debug: build_debug
+	@echo "Running debug..."
+	./$(OBJDEBUG)
 
-.PHONY: clean run all
+all: build run clean
+
+
+.PHONY: build build_debug clean run run_debug all
