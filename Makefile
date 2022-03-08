@@ -23,24 +23,24 @@ help:
 	printf "%s \\t %s\n" "run_debug" "run debug application"
 
 build: $(SRC)
-	@echo "Building files..."
+	@echo "Building application files..."
 	$(CC) $(CFLAGS) $(SRC) -o $(OBJ)
 
 build_debug: $(SRC)
-	@echo "Building files for debug..."
+	@echo "Building application files for debug..."
 	$(CC) $(CFLAGSDEBUG) $(SRC) -o $(OBJDEBUG)
 
 clean:
-	@echo "Cleaning files..."
+	@echo "Cleaning application files..."
 	rm -f $(OBJ)
 	rm -f $(OBJDEBUG)
 
 run: build
-	@echo "Running..."
+	@echo "Running application..."
 	./$(OBJ)
 
 run_debug: build_debug
-	@echo "Running debug..."
+	@echo "Running debug application..."
 	./$(OBJDEBUG)
 
 all: clean build run clean
