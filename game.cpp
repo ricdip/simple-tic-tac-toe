@@ -5,7 +5,7 @@
 #include "algorithms.hpp"
 #include "state.hpp"
 
-Move getUserMove() {
+Move TicTacToeGame::getPlayerMove() {
     int pos[2];
 
     std::cout << "\nInsert row: ";
@@ -21,9 +21,9 @@ Move getUserMove() {
     return Move(pos);
 }
 
-void AIvsAI(int d) {
+void TicTacToeGame::AIvsAI(int maxDepth) {
     TicTacToeState state;
-    Algorithm algorithm(d);
+    Algorithm algorithm(maxDepth);
     Move move;
 
     state.print();
@@ -41,9 +41,9 @@ void AIvsAI(int d) {
     }
 }
 
-void PlayervsAI(int d) {
+void TicTacToeGame::PlayervsAI(int maxDepth) {
     TicTacToeState state;
-    Algorithm algorithm(d);
+    Algorithm algorithm(maxDepth);
     Move move;
 
     state.print();
@@ -53,7 +53,7 @@ void PlayervsAI(int d) {
         bool turn = state.getTurn();
 
         if (turn) {
-            move = getUserMove();
+            move = getPlayerMove();
         } else {
             move = algorithm.minmax(state, turn);
         }

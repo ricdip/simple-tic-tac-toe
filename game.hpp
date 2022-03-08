@@ -3,10 +3,13 @@
 
 #include "move.hpp"
 
-Move getUserMove();
+class TicTacToeGame {
+   public:
+    Move getPlayerMove();
 
-void AIvsAI(int d);
+    void AIvsAI(int maxDepth);
 
-void PlayervsAI(int d);
+    void PlayervsAI(int maxDepth);
+};
 
 #endif
