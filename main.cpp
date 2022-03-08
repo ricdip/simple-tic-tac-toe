@@ -42,22 +42,6 @@ int Move::getScore() { return score; }
 
 void Move::setScore(int s) { score = s; }
 
-Move max(Move lhs, Move rhs) {
-    if (lhs.getScore() >= rhs.getScore()) {
-        return lhs;
-    } else {
-        return rhs;
-    }
-}
-
-Move min(Move lhs, Move rhs) {
-    if (lhs.getScore() <= rhs.getScore()) {
-        return lhs;
-    } else {
-        return rhs;
-    }
-}
-
 class TicTacToeGrid {
    private:
     // clang-format off
@@ -211,6 +195,55 @@ int H(TicTacToeGrid grid) {
     }
 }
 
+// TODO: debug
+class MinMax {
+   private:
+    Move bestMove = Move();
+
+    int minmaxVariant(TicTacToeGrid grid, int depth, bool player) {
+        if (depth == 0 || grid.isEndgame()) {
+            return H(grid);
+        }
+
+        if (player) {
+            int bestValue = INT_MIN;
+            std::vector<Move> moves = grid.getMoves();
+            for (auto it = moves.begin(); it != moves.end(); it++) {
+                TicTacToeGrid g = grid.makeMove(player, it->getPosition());
+
+                int value = minmaxVariant(g, depth - 1, false);
+                if (bestValue < value) {
+                    bestValue = value;
+                    bestMove = g.getLastMove();
+                }
+            }
+            return bestValue;
+
+        } else {
+            int bestValue = INT_MAX;
+            std::vector<Move> moves = grid.getMoves();
+            for (auto it = moves.begin(); it != moves.end(); it++) {
+                TicTacToeGrid g = grid.makeMove(player, it->getPosition());
+
+                int value = minmaxVariant(g, depth - 1, true);
+                if (bestValue > value) {
+                    bestValue = value;
+                    bestMove = g.getLastMove();
+                }
+            }
+            return bestValue;
+        }
+    }
+
+   public:
+    Move minmax(TicTacToeGrid grid, int depth, bool player) {
+        bestMove = Move();
+        minmaxVariant(grid, depth, player);
+
+        return bestMove;
+    }
+};
+
 int minmax(TicTacToeGrid grid, int depth, bool player) {
     if (depth == 0 || grid.isEndgame()) {
         return H(grid);
@@ -266,6 +299,7 @@ Move minmaxRoot(TicTacToeGrid grid, int depth, bool player) {
 
 int main(void) {
     TicTacToeGrid grid;
+    MinMax minmaxClass;
 
     while (!grid.isEndgame()) {
         bool turn = grid.getTurn();
