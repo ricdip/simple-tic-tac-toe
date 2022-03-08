@@ -52,7 +52,6 @@ class TicTacToeGrid {
     };
 
     bool turn = true;
-    Move lastMove = Move();
     // clang-format on
 
    public:
@@ -60,11 +59,10 @@ class TicTacToeGrid {
     TicTacToeGrid(char g[ROWS][COLS], bool t);
     void print();
     bool getTurn();
-    TicTacToeGrid makeMove(bool player, int position[2]);
+    TicTacToeGrid makeMove(bool player, Move move);
     std::vector<Move> getMoves();
     bool isEndgame();
     char victoryPlayer();
-    Move getLastMove();
 };
 
 TicTacToeGrid::TicTacToeGrid() {}
@@ -88,15 +86,14 @@ void TicTacToeGrid::print() {
 
 bool TicTacToeGrid::getTurn() { return turn; }
 
-TicTacToeGrid TicTacToeGrid::makeMove(bool player, int position[2]) {
+TicTacToeGrid TicTacToeGrid::makeMove(bool player, Move move) {
     TicTacToeGrid newGrid = TicTacToeGrid(grid, !player);
-    if (player) {
-        newGrid.grid[position[0]][position[1]] = P1;
-    } else {
-        newGrid.grid[position[0]][position[1]] = P2;
-    }
 
-    lastMove = Move(position);
+    if (player) {
+        newGrid.grid[move.getPosition()[0]][move.getPosition()[1]] = P1;
+    } else {
+        newGrid.grid[move.getPosition()[0]][move.getPosition()[1]] = P2;
+    }
 
     return newGrid;
 }
@@ -117,6 +114,10 @@ std::vector<Move> TicTacToeGrid::getMoves() {
 }
 
 bool TicTacToeGrid::isEndgame() {
+    if (victoryPlayer() != OO) {
+        return true;
+    }
+
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (grid[i][j] == OO) {
@@ -182,8 +183,6 @@ char TicTacToeGrid::victoryPlayer() {
     return OO;
 }
 
-Move TicTacToeGrid::getLastMove() { return lastMove; }
-
 int H(TicTacToeGrid grid) {
     char winner = grid.victoryPlayer();
     if (winner == P1) {
@@ -195,12 +194,12 @@ int H(TicTacToeGrid grid) {
     }
 }
 
-// TODO: debug
-class MinMax {
+class Algorithm {
    private:
-    Move bestMove = Move();
+    int maxDepth;
+    Move bestMove;
 
-    int minmaxVariant(TicTacToeGrid grid, int depth, bool player) {
+    int minmaxAux(TicTacToeGrid grid, int depth, bool player) {
         if (depth == 0 || grid.isEndgame()) {
             return H(grid);
         }
@@ -209,12 +208,14 @@ class MinMax {
             int bestValue = INT_MIN;
             std::vector<Move> moves = grid.getMoves();
             for (auto it = moves.begin(); it != moves.end(); it++) {
-                TicTacToeGrid g = grid.makeMove(player, it->getPosition());
+                TicTacToeGrid g = grid.makeMove(player, *it);
 
-                int value = minmaxVariant(g, depth - 1, false);
+                int value = minmaxAux(g, depth - 1, false);
                 if (bestValue < value) {
                     bestValue = value;
-                    bestMove = g.getLastMove();
+                    if (depth == maxDepth) {
+                        bestMove = *it;
+                    }
                 }
             }
             return bestValue;
@@ -223,12 +224,14 @@ class MinMax {
             int bestValue = INT_MAX;
             std::vector<Move> moves = grid.getMoves();
             for (auto it = moves.begin(); it != moves.end(); it++) {
-                TicTacToeGrid g = grid.makeMove(player, it->getPosition());
+                TicTacToeGrid g = grid.makeMove(player, *it);
 
-                int value = minmaxVariant(g, depth - 1, true);
+                int value = minmaxAux(g, depth - 1, true);
                 if (bestValue > value) {
                     bestValue = value;
-                    bestMove = g.getLastMove();
+                    if (depth == maxDepth) {
+                        bestMove = *it;
+                    }
                 }
             }
             return bestValue;
@@ -236,90 +239,110 @@ class MinMax {
     }
 
    public:
-    Move minmax(TicTacToeGrid grid, int depth, bool player) {
+    Algorithm(int d) {
+        maxDepth = d;
         bestMove = Move();
-        minmaxVariant(grid, depth, player);
+    }
+    Move minmax(TicTacToeGrid grid, bool player) {
+        bestMove = Move();
+
+        minmaxAux(grid, maxDepth, player);
 
         return bestMove;
     }
 };
 
-int minmax(TicTacToeGrid grid, int depth, bool player) {
-    if (depth == 0 || grid.isEndgame()) {
-        return H(grid);
-    }
+// int minmax(TicTacToeGrid grid, int depth, bool player) {
+//     if (depth == 0 || grid.isEndgame()) {
+//         return H(grid);
+//     }
+//
+//     if (player) {
+//         int bestMove = INT_MIN;
+//         std::vector<Move> moves = grid.getMoves();
+//         for (auto it = moves.begin(); it != moves.end(); it++) {
+//             TicTacToeGrid g = grid.makeMove(player, *it);
+//             bestMove = std::max(bestMove, minmax(g, depth - 1, false));
+//         }
+//         return bestMove;
+//
+//     } else {
+//         int bestMove = INT_MAX;
+//         std::vector<Move> moves = grid.getMoves();
+//         for (auto it = moves.begin(); it != moves.end(); it++) {
+//             TicTacToeGrid g = grid.makeMove(player, *it);
+//             bestMove = std::min(bestMove, minmax(g, depth - 1, true));
+//         }
+//         return bestMove;
+//     }
+// }
+//
+// Move minmaxRoot(TicTacToeGrid grid, int depth, bool player) {
+//     Move bestMove = Move();
+//     int bestValue = INT_MIN;
+//     if (!grid.getTurn()) {
+//         bestValue = INT_MAX;
+//     }
+//
+//     std::vector<Move> moves = grid.getMoves();
+//     for (auto it = moves.begin(); it != moves.end(); it++) {
+//         TicTacToeGrid g = grid.makeMove(player, *it);
+//         int value = minmax(g, depth - 1, !player);
+//
+//         if (player) {
+//             if (value > bestValue) {
+//                 bestValue = value;
+//                 bestMove = *it;
+//             }
+//         } else {
+//             if (value < bestValue) {
+//                 bestValue = value;
+//                 bestMove = *it;
+//             }
+//         }
+//     }
+//
+//     return bestMove;
+// }
 
-    if (player) {
-        int bestMove = INT_MIN;
-        std::vector<Move> moves = grid.getMoves();
-        for (auto it = moves.begin(); it != moves.end(); it++) {
-            TicTacToeGrid g = grid.makeMove(player, it->getPosition());
-            bestMove = std::max(bestMove, minmax(g, depth - 1, false));
-        }
-        return bestMove;
+Move getUserMove() {
+    int pos[2];
 
-    } else {
-        int bestMove = INT_MAX;
-        std::vector<Move> moves = grid.getMoves();
-        for (auto it = moves.begin(); it != moves.end(); it++) {
-            TicTacToeGrid g = grid.makeMove(player, it->getPosition());
-            bestMove = std::min(bestMove, minmax(g, depth - 1, true));
-        }
-        return bestMove;
-    }
-}
+    std::cout << "\nInsert row: ";
 
-Move minmaxRoot(TicTacToeGrid grid, int depth, bool player) {
-    Move bestMove = Move();
-    int bestValue = INT_MIN;
-    if (!grid.getTurn()) {
-        bestValue = INT_MAX;
-    }
+    std::cin >> pos[0];
 
-    std::vector<Move> moves = grid.getMoves();
-    for (auto it = moves.begin(); it != moves.end(); it++) {
-        TicTacToeGrid g = grid.makeMove(player, it->getPosition());
-        int value = minmax(g, depth - 1, !player);
+    std::cout << "\nInsert col: ";
 
-        if (player) {
-            if (value > bestValue) {
-                bestValue = value;
-                bestMove = *it;
-            }
-        } else {
-            if (value < bestValue) {
-                bestValue = value;
-                bestMove = *it;
-            }
-        }
-    }
+    std::cin >> pos[1];
 
-    return bestMove;
+    std::cout << std::endl;
+
+    return Move(pos);
 }
 
 int main(void) {
     TicTacToeGrid grid;
-    MinMax minmaxClass;
+    Algorithm algorithm(9);
+    Move move;
+
+    grid.print();
+    std::cout << std::endl;
 
     while (!grid.isEndgame()) {
         bool turn = grid.getTurn();
 
-        std::cout << "pre-move" << std::endl;
+        if (turn) {
+            // move = getUserMove();
+            move = algorithm.minmax(grid, turn);
+        } else {
+            // move = minmaxRoot(grid, 9, turn);
+            move = algorithm.minmax(grid, turn);
+        }
+
+        grid = grid.makeMove(turn, move);
+
         grid.print();
-
-        Move m = minmaxRoot(grid, 9, turn);
-
-        std::cout << "score: " << m.getScore() << std::endl;
-        std::cout << "pos: " << m.getPosition()[0] << "," << m.getPosition()[1]
-                  << std::endl;
-
-        // grid = grid.makeMove(turn, grid.getMoves()[0].getPosition());
-        grid = grid.makeMove(turn, m.getPosition());
-
-        std::cout << "post-move" << std::endl;
-        grid.print();
-
-        std::cout << "------------------------" << std::endl;
         std::cout << std::endl;
     }
 
