@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "algorithms.hpp"
+#include "../algorithms/algorithms.hpp"
 #include "state.hpp"
 
 Move TicTacToeGame::getPlayerMove() {

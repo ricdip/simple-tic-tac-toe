@@ -2,7 +2,7 @@
 
 #include <climits>
 
-#include "heuristics.hpp"
+#include "../heuristics/heuristics.hpp"
 
 int Algorithm::minmaxAux(TicTacToeState state, int depth, bool player) {
     if (depth == 0 || state.isEndgame()) {

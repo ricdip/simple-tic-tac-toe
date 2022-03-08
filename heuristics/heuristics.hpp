@@ -1,7 +1,7 @@
 #ifndef HEURISTICS_HPP
 #define HEURISTICS_HPP
 
-#include "state.hpp"
+#include "../game/state.hpp"
 
 int H(TicTacToeState state);
 

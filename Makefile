@@ -4,7 +4,7 @@ CFLAGS = -pedantic -Wall -Wextra -Werror
 CFLAGSDEBUG = -pedantic -Wall -Wextra -Werror -fsanitize=address -g
 
 # sources and objects
-SRC = move.cpp state.cpp heuristics.cpp algorithms.cpp game.cpp main.cpp
+SRC = heuristics/heuristics.cpp algorithms/algorithms.cpp game/move.cpp game/state.cpp game/game.cpp main.cpp
 OBJ = main.exe
 OBJDEBUG = main_debug.exe
 

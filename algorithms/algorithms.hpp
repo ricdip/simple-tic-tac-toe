@@ -1,8 +1,8 @@
 #ifndef ALGORITHMS_HPP
 #define ALGORITHMS_HPP
 
-#include "move.hpp"
-#include "state.hpp"
+#include "../game/move.hpp"
+#include "../game/state.hpp"
 
 class Algorithm {
    private:
