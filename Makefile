@@ -1,10 +1,11 @@
 CC = g++
 CFLAGS = -pedantic -Wall -Wextra -Werror
 CFLAGSDEBUG = -pedantic -Wall -Wextra -Werror -fsanitize=address -g
-SRC = main.cpp
+
+SRC = move.cpp state.cpp heuristics.cpp algorithms.cpp game.cpp main.cpp
 OBJ = main.exe
 OBJDEBUG = main_debug.exe
-OBJDEBUGGER = main_debug.out
+
 
 .DEFAULT_GOAL: build
 
@@ -30,13 +31,7 @@ run_debug: build_debug
 	@echo "Running debug..."
 	./$(OBJDEBUG)
 
-gdb:
-	@echo "Running debugger..."
-	rm -f $(OBJDEBUGGER)
-	g++ $(SRC) -o $(OBJDEBUGGER) -g
-	gdb $(OBJDEBUGGER)
-
 all: clean build run clean
 
 
-.PHONY: build build_debug clean run run_debug gdb all
+.PHONY: build build_debug clean run run_debug all
