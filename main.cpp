@@ -1,7 +1,5 @@
-#include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <string>
 
 #include "game/game.hpp"
 
@@ -37,7 +35,7 @@ Args parseArgs(int argc, char* argv[]) {
 
     } else {
         // default args:
-        //  - depth = 9
+        //  - maxDepth = 9
         //  - mode  = AIvsAI
         return Args{9, false};
     }
@@ -47,6 +45,12 @@ int main(int argc, char* argv[]) {
     TicTacToeGame game;
 
     Args parsedArgs = parseArgs(argc, argv);
+
+    std::cout << std::endl;
+    std::cout << "- max depth: " << parsedArgs.maxDepth << std::endl;
+    std::cout << "- mode     : "
+              << ((parsedArgs.mode) ? "player_vs_ai" : "ai_vs_ai") << std::endl;
+    std::cout << std::endl;
 
     if (parsedArgs.mode == AI_VS_AI) {
         // Tic Tac Toe AI vs AI mode
