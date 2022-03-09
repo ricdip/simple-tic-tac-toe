@@ -1,4 +1,4 @@
-# C++ Simple Tic Tac Toe
+# Simple C++ Tic Tac Toe
 
 A simple C++ implementation of the Tic Tac Toe game that uses the MinMax Algorithm for the AI implementation
 
