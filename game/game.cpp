@@ -21,9 +21,9 @@ Move TicTacToeGame::getPlayerMove() {
     return Move(pos);
 }
 
-void TicTacToeGame::AIvsAI(int maxDepth) {
+void TicTacToeGame::AIvsAI(std::string algorithm, int maxDepth) {
     TicTacToeState state;
-    Algorithm algorithm(maxDepth);
+    Algorithm searchAlgorithm(maxDepth);
     Move move;
 
     state.print();
@@ -32,7 +32,15 @@ void TicTacToeGame::AIvsAI(int maxDepth) {
     while (!state.isEndgame()) {
         bool turn = state.getTurn();
 
-        move = algorithm.minmax(state, turn);
+        if (algorithm == MINMAX) {
+            move = searchAlgorithm.minmax(state, turn);
+
+        } else if (algorithm == MINMAX_ALPHA_BETA) {
+            move = searchAlgorithm.minmaxAlphaBeta(state, turn);
+
+        } else {
+            throw "Illegal search algorithm";
+        }
 
         state = state.makeMove(turn, move);
 
@@ -41,9 +49,9 @@ void TicTacToeGame::AIvsAI(int maxDepth) {
     }
 }
 
-void TicTacToeGame::PlayervsAI(int maxDepth) {
+void TicTacToeGame::PlayervsAI(std::string algorithm, int maxDepth) {
     TicTacToeState state;
-    Algorithm algorithm(maxDepth);
+    Algorithm searchAlgorithm(maxDepth);
     Move move;
 
     state.print();
@@ -55,7 +63,15 @@ void TicTacToeGame::PlayervsAI(int maxDepth) {
         if (turn) {
             move = getPlayerMove();
         } else {
-            move = algorithm.minmax(state, turn);
+            if (algorithm == MINMAX) {
+                move = searchAlgorithm.minmax(state, turn);
+
+            } else if (algorithm == MINMAX_ALPHA_BETA) {
+                move = searchAlgorithm.minmaxAlphaBeta(state, turn);
+
+            } else {
+                throw "Illegal search algorithm";
+            }
         }
 
         state = state.makeMove(turn, move);
