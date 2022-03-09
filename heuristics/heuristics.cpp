@@ -1,7 +1,5 @@
 #include "heuristics.hpp"
 
-#include <climits>
-
 int H(TicTacToeState state) {
     char winner = state.victoryPlayer();
     if (winner == P1) {
