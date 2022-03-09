@@ -1,3 +1,4 @@
+#include <chrono>
 #include <cstring>
 #include <iostream>
 
@@ -54,7 +55,16 @@ int main(int argc, char* argv[]) {
 
     if (parsedArgs.mode == AI_VS_AI) {
         // Tic Tac Toe AI vs AI mode
+        auto start = std::chrono::steady_clock::now();
         game.AIvsAI(parsedArgs.maxDepth);
+        auto end = std::chrono::steady_clock::now();
+
+        auto diff =
+            std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                .count();
+
+        std::cout << std::endl;
+        std::cout << "- elapsed time: " << diff << " ms" << std::endl;
 
     } else if (parsedArgs.mode == PLAYER_VS_AI) {
         // Tic Tac Toe Player vs AI mode
