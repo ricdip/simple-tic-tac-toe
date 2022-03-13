@@ -1,6 +1,7 @@
 #include <chrono>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 
 #include "game/game.hpp"
 
@@ -30,7 +31,7 @@ Args parseArgs(int argc, char* argv[]) {
                     mode = true;
 
                 } else {
-                    throw "Illegal mode";
+                    throw std::runtime_error("Illegal mode");
                 }
             } else if (strcmp(argv[i], "--algorithm") == 0) {
                 algorithm = argv[i + 1];

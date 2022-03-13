@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "../algorithms/algorithms.hpp"
 #include "state.hpp"
@@ -39,7 +40,7 @@ void TicTacToeGame::AIvsAI(std::string algorithm, int maxDepth) {
             move = searchAlgorithm.minmaxAlphaBeta(state, turn);
 
         } else {
-            throw "Illegal search algorithm";
+            throw std::runtime_error("Illegal search algorithm");
         }
 
         state = state.makeMove(turn, move);
@@ -70,7 +71,7 @@ void TicTacToeGame::PlayervsAI(std::string algorithm, int maxDepth) {
                 move = searchAlgorithm.minmaxAlphaBeta(state, turn);
 
             } else {
-                throw "Illegal search algorithm";
+                throw std::runtime_error("Illegal search algorithm");
             }
         }
 
