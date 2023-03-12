@@ -16,11 +16,15 @@ A simple C++ implementation of the Tic Tac Toe game that uses the MinMax Algorit
 
 ## Building the application
 
-`make build`
+```bash
+user@host:~$ make build
+```
 
 ## Running the application
 
-`./main.exe --depth <maxDepth> --mode <runningMode> --algorithm <algorithm>`
+```bash
+user@host:~$ ./main.exe --depth <maxDepth> --mode <runningMode> --algorithm <algorithm>
+```
 
 - The application has two running modes:
     - `ai_vs_ai`: both player are controlled by the AI
@@ -33,9 +37,12 @@ A simple C++ implementation of the Tic Tac Toe game that uses the MinMax Algorit
 ### Running examples
 - Default setting (max depth = 9, mode = `ai_vs_ai`, algorithm = `minmax`)
 
-`./main.exe`
+```bash
+user@host:~$ ./main.exe
+```
 
 - Custom setting (max depth = 2, mode = `player_vs_ai`, algorithm = `minmax_alpha_beta`)
 
-`./main.exe --depth 2 --mode player_vs_ai --algorithm minmax_alpha_beta`
-
+```bash
+user@host:~$ ./main.exe --depth 2 --mode player_vs_ai --algorithm minmax_alpha_beta
+```
